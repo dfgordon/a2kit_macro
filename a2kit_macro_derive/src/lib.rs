@@ -78,7 +78,7 @@ fn impl_disk_struct(ast: &syn::DeriveInput) -> TokenStream {
 
             let gen = quote! {
                 impl DiskStruct for #name {
-                    fn new() -> Self {
+                    fn new() -> Self where Self: Sized {
                         Self {
                             #new_quote
                         }
@@ -96,7 +96,7 @@ fn impl_disk_struct(ast: &syn::DeriveInput) -> TokenStream {
                         #update_from_bytes_quote
 
                     }
-                    fn from_bytes(dat: &Vec<u8>) -> Self {
+                    fn from_bytes(dat: &Vec<u8>) -> Self where Self: Sized{
                         let mut ans = Self::new();
                         ans.update_from_bytes(dat);
                         return ans;
