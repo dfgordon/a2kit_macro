@@ -12,4 +12,4 @@ homepage = "https://github.com/dfgordon/a2kit_macro"
 
 [dependencies]
 
-a2kit_macro_derive = "*"
+a2kit_macro_derive = "0.1.0"
