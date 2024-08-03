@@ -88,18 +88,18 @@ fn impl_disk_struct(ast: &syn::DeriveInput) -> TokenStream {
                         #to_bytes_quote
                         return ans;
                     }
-                    fn update_from_bytes(&mut self,dat: &Vec<u8>) {
+                    fn update_from_bytes(&mut self,dat: &[u8]) -> Result<(),DiskStructError> {
                         if dat.len()<self.len() {
-                            panic!("in from_bytes, length of vector is {}, but DiskStruct is {}",dat.len(),self.len());
+                            return Err(DiskStructError::OutOfData)
                         }
                         let mut offset = 0;
                         #update_from_bytes_quote
-
+                        Ok(())
                     }
-                    fn from_bytes(dat: &Vec<u8>) -> Self where Self: Sized{
+                    fn from_bytes(dat: &[u8]) -> Result<Self,DiskStructError> where Self: Sized {
                         let mut ans = Self::new();
-                        ans.update_from_bytes(dat);
-                        return ans;
+                        ans.update_from_bytes(dat)?;
+                        Ok(ans)
                     }
                     fn len(&self) -> usize {
                         let mut ans = 0;
